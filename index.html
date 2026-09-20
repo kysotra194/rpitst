@@ -1,0 +1,2472 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Pro</title>
+    <!-- Modern Google Fonts with Kantumruy Pro for Khmer UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide/dist/umd/lucide.min.js"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ==========================================================================
+           AeroGrowth Premium CSS Stylesheet
+           Theme: Fintech Teal & Emerald Accord (Multi-Mode Financial Engine)
+           ========================================================================== */
+
+        /* Modern CSS Reset & Variable Definitions */
+        :root {
+            --primary: #0f7680;
+            --primary-light: #1598a6;
+            --primary-dark: #094950;
+            --primary-accent: #e06a55;
+            /* Dynamic coral/red for graph series */
+            --primary-accent-hover: #cb533d;
+            --secondary-blue: #0b2240;
+            /* Navy blue for tables and buttons */
+            --bg-app: #f4f8f8;
+            --bg-card: #ffffff;
+            --text-main: #1e2c2e;
+            --text-muted: #5c7173;
+            --border-color: #dbe7e7;
+            --font-heading: 'Outfit', 'Kantumruy Pro', sans-serif;
+            --font-body: 'Inter', 'Kantumruy Pro', sans-serif;
+
+            /* Premium Shadows & Borders */
+            --shadow-sm: 0 4px 6px -1px rgba(15, 118, 128, 0.05), 0 2px 4px -1px rgba(15, 118, 128, 0.03);
+            --shadow-md: 0 10px 15px -3px rgba(15, 118, 128, 0.08), 0 4px 6px -2px rgba(15, 118, 128, 0.04);
+            --shadow-lg: 0 20px 25px -5px rgba(15, 118, 128, 0.12), 0 10px 10px -5px rgba(15, 118, 128, 0.06);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.5;
+            padding: 24px 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* App Wrapper Grid */
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Header Component */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            color: var(--primary);
+            width: 28px;
+            height: 28px;
+            stroke-width: 2.5;
+        }
+
+        .brand-name {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            color: var(--primary-dark);
+        }
+
+        .brand-divider {
+            color: var(--border-color);
+            font-weight: 300;
+        }
+
+        .app-title {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .currency-toggle {
+            display: flex;
+            background: #eef3f3;
+            padding: 3px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 1px 2px rgba(15, 118, 128, 0.05);
+        }
+
+        .currency-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 14px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .currency-btn:hover {
+            color: var(--primary);
+        }
+
+        .currency-btn.active {
+            background: var(--bg-card);
+            color: var(--primary-dark);
+            box-shadow: 0 2px 6px rgba(15, 118, 128, 0.08);
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            background: #eef7f7;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #d0e7e7;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            position: relative;
+            animation: pulseStatus 2s infinite;
+        }
+
+        @keyframes pulseStatus {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        /* ==========================================================================
+           Segmented Tab Switcher Mode Panel
+           ========================================================================== */
+        .mode-tabs {
+            display: flex;
+            background: #eef3f3;
+            padding: 6px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            align-self: center;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .tab-btn i {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.2;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--bg-card);
+            color: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(15, 118, 128, 0.08);
+        }
+
+        /* Helper Class for dynamic visibility switching */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Card Definition */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            padding: 24px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+
+        /* Master Layout Grid */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ==========================================================================
+           Left Panel: Parameters Controls
+           ========================================================================== */
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-icon {
+            color: var(--primary);
+            width: 22px;
+            height: 22px;
+        }
+
+        .panel-header h2 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .panel-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        /* Input Fields & Slider Styling */
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-labels {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-labels label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .optional-badge {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: #eef3f3;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-wrapper-inline {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f4f8f8;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0 10px;
+            transition: var(--transition);
+        }
+
+        .input-wrapper-inline:focus-within {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(15, 118, 128, 0.1);
+        }
+
+        .currency-symbol,
+        .percentage-symbol,
+        .unit-symbol {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .currency-symbol {
+            margin-right: 4px;
+        }
+
+        .percentage-symbol,
+        .unit-symbol {
+            margin-left: 4px;
+        }
+
+        .numeric-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-dark);
+            width: 100px;
+            padding: 6px 0;
+            text-align: right;
+        }
+
+        /* Custom Range Slider */
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .slider-input {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border-color);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2.5px solid #ffffff;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(15, 118, 128, 0.3);
+            transition: var(--transition);
+        }
+
+        .slider-input::-webkit-slider-thumb:hover {
+            background: var(--primary-light);
+            transform: scale(1.15);
+        }
+
+        .slider-range-limits {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Custom Selection Dropdown */
+        .custom-select-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f4f8f8;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .custom-select-wrapper:focus-within {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(15, 118, 128, 0.1);
+        }
+
+        .select-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--primary);
+            width: 18px;
+            height: 18px;
+            pointer-events: none;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .custom-select-wrapper::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid var(--primary);
+            position: absolute;
+            right: 14px;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           Segmented Option Radio Button Switch (Loan Options Opt 1 vs Opt 2)
+           ========================================================================== */
+        .segmented-control {
+            display: flex;
+            background: #f4f8f8;
+            border: 1.5px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .segmented-option {
+            flex: 1;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+        }
+
+        .segmented-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .segmented-label {
+            display: block;
+            padding: 8px 12px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-muted);
+            background: transparent;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .segmented-option input[type="radio"]:checked+.segmented-label {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(15, 118, 128, 0.15);
+        }
+
+        /* Formula Panel */
+        .formula-info {
+            background: #f4fbfb;
+            border: 1px solid #d0ebeb;
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            margin-top: 10px;
+        }
+
+        .formula-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .formula-icon {
+            width: 14px;
+            height: 14px;
+        }
+
+        .formula-equation {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-dark);
+            background: #ffffff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #e0ecec;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .formula-legend {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ==========================================================================
+           Right Panel: Results & Visualization
+           ========================================================================== */
+        .results-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Results Hero Highlight Banner */
+        .results-hero-card {
+            background: radial-gradient(circle at top left, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #ffffff;
+            border-radius: var(--radius-md);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-hero-card::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+            top: -50px;
+            right: -50px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .results-hero-title {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            opacity: 0.95;
+            text-align: center;
+        }
+
+        .results-banner-sentence {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.5;
+            margin: 8px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* Highlighting Boxes */
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            padding: 2px 14px;
+            border-radius: 6px;
+            display: inline-block;
+            color: #ffffff;
+            font-weight: 800;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight-amount-box {
+            background: #ffffff;
+            color: var(--primary-dark);
+            padding: 2px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 800;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .results-hero-subtitle {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.85;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            padding-top: 16px;
+        }
+
+        .results-hero-footer-note {
+            font-size: 12px;
+            line-height: 1.5;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        /* Quick Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .metric-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .metric-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .metric-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .metric-value {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .metric-icon-bg {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .metric-icon-bg i {
+            width: 20px;
+            height: 20px;
+        }
+
+        .teal-bg {
+            background-color: #eef7f7;
+            color: var(--primary);
+        }
+
+        .blue-bg {
+            background-color: #eff3f8;
+            color: #3b82f6;
+        }
+
+        .emerald-bg {
+            background-color: #ecfdf5;
+            color: #10b981;
+        }
+
+        /* ==========================================================================
+           Chart Panel Container
+           ========================================================================== */
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 14px;
+        }
+
+        .chart-header h3 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .chart-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .chart-source-indicator {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #eef7f7;
+            border: 1px solid #d0e7e7;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 320px;
+        }
+
+        /* ==========================================================================
+           Ledger Breakdown Table Section
+           ========================================================================== */
+        .ledger-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .toggle-btn-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-toggle-table {
+            background-color: var(--secondary-blue);
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 24px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(11, 34, 64, 0.15);
+        }
+
+        .btn-toggle-table:hover {
+            background-color: #0e3059;
+            box-shadow: 0 6px 12px rgba(11, 34, 64, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .btn-toggle-table:active {
+            transform: translateY(1px);
+        }
+
+        .btn-arrow {
+            width: 14px;
+            height: 14px;
+            transition: var(--transition);
+        }
+
+        .btn-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* Slide Down table wrapper */
+        .table-wrapper {
+            overflow: hidden;
+            max-height: 1000px;
+            /* Large height for slide-down animation */
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease;
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .table-wrapper.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            border-color: transparent;
+            pointer-events: none;
+        }
+
+        .table-header-custom {
+            text-align: center;
+            border-bottom: 1.5px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .table-header-custom h3 {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .scrollable-table {
+            max-height: 480px;
+            overflow-y: auto;
+        }
+
+        .breakdown-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .breakdown-table th {
+            background-color: var(--primary);
+            color: #ffffff;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            padding: 10px 16px;
+            font-size: 13px;
+            letter-spacing: 0.2px;
+        }
+
+        .breakdown-table th:first-child {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .breakdown-table th:last-child {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .breakdown-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .breakdown-table tbody tr {
+            background-color: #ffffff;
+            transition: var(--transition);
+        }
+
+        .breakdown-table tbody tr:nth-child(even) {
+            background-color: #f5fafb;
+        }
+
+        .breakdown-table tbody tr:hover {
+            background-color: #e6f3f4;
+        }
+
+        .breakdown-table td:nth-child(2),
+        .breakdown-table td:nth-child(3),
+        .breakdown-table td:nth-child(4),
+        .breakdown-table td:nth-child(5) {
+            text-align: right;
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        /* Footer Section */
+        .app-footer {
+            text-align: center;
+            padding: 24px 0 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            line-height: 1.6;
+        }
+
+        /* Chrome, Safari, Edge, Opera: hide number spinner handles by default for premium design */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox: hide number spinner */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Responsive adjustment to keep tab labels in a single line on mobile phones */
+        /* High-fidelity mobile responsive refinements */
+        @media (max-width: 600px) {
+            body {
+                padding: 16px 8px;
+                overflow-x: hidden;
+                /* Prevent body horizontal scroll */
+            }
+
+            .app-container {
+                gap: 16px;
+                width: 100%;
+                max-width: 100%;
+                overflow: hidden;
+            }
+
+            .app-header {
+                padding: 12px 16px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .card {
+                padding: 16px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .mode-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                justify-content: flex-start;
+                scrollbar-width: none;
+                /* Hide scrollbar for Firefox */
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .mode-tabs::-webkit-scrollbar {
+                display: none;
+                /* Hide scrollbar for Chrome/Safari */
+            }
+
+            .tab-btn {
+                flex: 0 0 auto;
+                font-size: 11px;
+                padding: 8px 12px;
+                gap: 4px;
+            }
+
+            .tab-btn i {
+                width: 14px;
+                height: 14px;
+            }
+
+            /* Prevent grid columns from staying rigid; allow full fluid shrinkage */
+            .calculator-grid {
+                gap: 16px;
+                width: 100%;
+                min-width: 0;
+            }
+
+            .controls-panel,
+            .results-panel {
+                width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }
+
+            /* Enable horizontal scroll on mobile for tables to prevent stretching parent containers */
+            .scrollable-table {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .results-hero-card {
+                padding: 20px 16px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .results-banner-sentence {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            /* Vertical stacking for form elements to prevent horizontal clipping/overflow */
+            .input-labels {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .input-labels label {
+                width: 100%;
+            }
+
+            .input-wrapper-inline {
+                width: 100%;
+                justify-content: space-between;
+                box-sizing: border-box;
+            }
+
+            .numeric-input {
+                width: 100%;
+                flex-grow: 1;
+            }
+
+            /* Stack segmented loan option buttons vertically to prevent Khmer text truncation */
+            .segmented-control {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .segmented-option {
+                width: 100%;
+            }
+
+            .segmented-label {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <i data-lucide="trending-up" class="logo-icon"></i>
+                <span class="brand-name">Investor</span>
+            </div>
+            <div class="header-actions">
+                <div class="currency-toggle">
+                    <button id="btn-usd" class="currency-btn active">USD ($)</button>
+                    <button id="btn-khr" class="currency-btn">KHR (៛)</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Mode Selection Tabs -->
+        <div class="mode-tabs">
+            <button id="tab-savings" class="tab-btn active">
+                <i data-lucide="line-chart"></i>
+                <span id="tab-savings-text">កំណើនប្រាក់សន្សំ</span>
+            </button>
+            <button id="tab-goal" class="tab-btn">
+                <i data-lucide="target"></i>
+                <span id="tab-goal-text">សន្សំដើម្បីគោលដៅ</span>
+            </button>
+            <button id="tab-loan" class="tab-btn">
+                <i data-lucide="credit-card"></i>
+                <span id="tab-loan-text">ការទូទាត់កម្ចី</span>
+            </button>
+        </div>
+
+        <!-- Main Workspace -->
+        <main class="calculator-grid">
+
+            <!-- Left Side: Configuration Controls -->
+            <section class="controls-panel card">
+                <div class="panel-header">
+                    <i data-lucide="sliders" class="panel-icon"></i>
+                    <h2 id="parameter-panel-title">ប៉ារ៉ាមែត្រនៃការគណនា</h2>
+                </div>
+                <p id="parameter-panel-desc" class="panel-desc">កែសម្រួលអថេរខាងក្រោម
+                    ដើម្បីប៉ាន់ស្មានកំណើននៃការវិនិយោគរបស់អ្នកទៅតាមពេលវេលា។</p>
+
+                <form id="calculator-form" onsubmit="event.preventDefault();">
+
+                    <!-- Principal Input -->
+                    <div class="input-group">
+                        <div class="input-labels">
+                            <label id="label-principal" for="input-principal">ប្រាក់ដើមវិនិយោគ (P)</label>
+                            <div class="input-wrapper-inline">
+                                <span class="currency-symbol" id="display-currency-symbol">$</span>
+                                <input type="number" id="input-principal" min="100" max="10000000" value="10000"
+                                    step="100" class="numeric-input">
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="slider-principal" min="100" max="100000" value="10000" step="500"
+                                class="slider-input">
+                            <div class="slider-range-limits">
+                                <span id="limit-principal-min">$100</span>
+                                <span id="limit-principal-max">$100,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Contribution Input (Savings Only) -->
+                    <div id="group-contribute" class="input-group mode-savings-only">
+                        <div class="input-labels">
+                            <label id="label-contribute" for="input-contribute">ប្រាក់សន្សំប្រចាំខែ (PMT) <span <span
+                                    class="optional-badge">មិនតម្រូវ</span></label>
+                            <div class="input-wrapper-inline">
+                                <span class="currency-symbol" id="display-contribute-symbol">$</span>
+                                <input type="number" id="input-contribute" min="0" max="10000000" value="500" step="10"
+                                    class="numeric-input">
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="slider-contribute" min="0" max="10000" value="500" step="50"
+                                class="slider-input">
+                            <div class="slider-range-limits">
+                                <span id="limit-contribute-min">$0</span>
+                                <span id="limit-contribute-max">$10,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interest Rate Input -->
+                    <div class="input-group">
+                        <div class="input-labels">
+                            <label id="label-rate" for="input-rate">អត្រាការប្រាក់ប្រចាំឆ្នាំ (r)</label>
+                            <div class="input-wrapper-inline">
+                                <input type="number" id="input-rate" min="0.05" max="100" value="15.00" step="0.05"
+                                    class="numeric-input percentage-input">
+                                <span class="percentage-symbol">%</span>
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="slider-rate" min="0.5" max="30" value="15" step="0.1"
+                                class="slider-input">
+                            <div class="slider-range-limits">
+                                <span id="limit-rate-min">0.5%</span>
+                                <span id="limit-rate-max">30.0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Term Horizon / Duration Input -->
+                    <div class="input-group">
+                        <div class="input-labels">
+                            <label id="label-years" for="input-years">រយៈពេលគិតជាឆ្នាំ (t)</label>
+                            <div class="input-wrapper-inline">
+                                <input type="number" id="input-years" min="1" max="120" value="15" step="1"
+                                    class="numeric-input years-input">
+                                <span id="unit-label" class="unit-symbol">ឆ្នាំ</span>
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="slider-years" min="1" max="50" value="15" step="1"
+                                class="slider-input">
+                            <div class="slider-range-limits">
+                                <span id="limit-years-min">1 ឆ្នាំ</span>
+                                <span id="limit-years-max">50 ឆ្នាំ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compounding Interval (n) - Savings Only -->
+                    <div id="group-compound" class="input-group select-group mode-savings-only">
+                        <div class="input-labels">
+                            <label for="input-compound" id="label-compound">ប្រេកង់នៃការបូកការប្រាក់ (n)</label>
+                        </div>
+                        <div class="custom-select-wrapper">
+                            <i data-lucide="calendar" class="select-icon"></i>
+                            <select id="input-compound" class="custom-select">
+                                <option value="1" selected>ប្រចាំឆ្នាំ (១ ដង / ឆ្នាំ)</option>
+                                <option value="2">កន្លះឆ្នាំម្តង (២ ដង / ឆ្នាំ)</option>
+                                <option value="4">ប្រចាំត្រីមាស (៤ ដង / ឆ្នាំ)</option>
+                                <option value="12">ប្រចាំខែ (១២ ដង / ឆ្នាំ)</option>
+                                <option value="365">ប្រចាំថ្ងៃ (៣៦៥ ដង / ឆ្នាំ)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Repayment Options (Opt) - Loan Only -->
+                    <div id="group-repayment" class="input-group mode-loan-only hidden">
+                        <div class="input-labels">
+                            <label id="label-repayment-method">វិធីសាស្ត្រសងប្រាក់ (Opt)</label>
+                        </div>
+                        <div class="segmented-control">
+                            <label class="segmented-option">
+                                <input type="radio" name="loan-option" value="1" checked>
+                                <span class="segmented-label" id="label-opt-flat">អត្រាថេរ (ជម្រើសទី ១)</span>
+                            </label>
+                            <label class="segmented-option">
+                                <input type="radio" name="loan-option" value="2">
+                                <span class="segmented-label" id="label-opt-reducing">សមតុល្យថយចុះ (ជម្រើសទី ២)</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Formula Info Box -->
+                <div class="formula-info">
+                    <div class="formula-header">
+                        <i data-lucide="info" class="formula-icon"></i>
+                        <span id="formula-panel-label">រូបមន្តគណិតវិទ្យាដែលបានប្រើ</span>
+                    </div>
+                    <div id="formula-panel-math" class="formula-equation">A = P &times; (1 + r/n)<sup>(n&middot;t)</sup>
+                    </div>
+                    <p id="formula-panel-legend" class="formula-legend">ដែល <strong>A</strong> គឺជាតម្លៃចុងក្រោយ,
+                        <strong>P</strong> គឺជាប្រាក់ដើមវិនិយោគ, <strong>r</strong> គឺជាអត្រាការប្រាក់,
+                        <strong>n</strong> គឺជាប្រេកង់នៃការបូកការប្រាក់ក្នុងមួយឆ្នាំ និង <strong>t</strong>
+                        ជារយៈពេលគិតជាឆ្នាំ។
+                    </p>
+                </div>
+            </section>
+
+            <!-- Right Side: Results and Dynamic Visualizations -->
+            <section class="results-panel">
+
+                <!-- High-Impact Hero Results Card -->
+                <div class="results-hero-card">
+                    <h3 id="results-hero-title" class="results-hero-title">លទ្ធផលនៃការគណនា</h3>
+                    <div id="results-banner-sentence" class="results-banner-sentence">
+                        ក្នុងរយៈពេល <span class="highlight-box" id="display-years-box">15</span> ឆ្នាំ
+                        អ្នកនឹងមានប្រាក់សរុប <span class="highlight-amount-box"
+                            id="display-amount-box">$81,370.62</span>
+                    </div>
+                    <p id="results-hero-subtitle" class="results-hero-subtitle">
+                        គំនូសតាងខាងក្រោមបង្ហាញពីការប៉ាន់ស្មានអំពីចំនួនប្រាក់សន្សំដំបូងរបស់អ្នកដែលនឹងកើនឡើងទៅតាមពេលវេលា
+                        យោងទៅតាមអត្រាការប្រាក់ និងកាលវិភាគបូកការប្រាក់ដែលអ្នកបានកំណត់។
+                    </p>
+                    <p id="results-hero-footer-note" class="results-hero-footer-note">
+                        សូមចងចាំថា ការកែសម្រួលបន្តិចបន្តួចលើអថេរទាំងនេះអាចប៉ះពាល់ដល់លទ្ធផលចុងក្រោយ។
+                        អ្នកអាចសាកល្បងបញ្ចូលតួលេខផ្សេងទៀត ដើម្បីមើលសេនារីយ៉ូផ្សេងៗគ្នា។
+                    </p>
+                </div>
+
+                <!-- Fast Summary Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <span id="metric-label-1" class="metric-label">តម្លៃនាពេលអនាគត</span>
+                            <h4 id="summary-total" class="metric-value">$81,370.62</h4>
+                        </div>
+                        <div class="metric-icon-bg teal-bg">
+                            <i id="metric-icon-1" data-lucide="wallet"></i>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <span id="metric-label-2" class="metric-label">ប្រាក់ដើមវិនិយោគសរុប</span>
+                            <h4 id="summary-contributions" class="metric-value">$10,000.00</h4>
+                        </div>
+                        <div class="metric-icon-bg blue-bg">
+                            <i id="metric-icon-2" data-lucide="piggy-bank"></i>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <span id="metric-label-3" class="metric-label">ការប្រាក់សរុបដែលទទួលបាន</span>
+                            <h4 id="summary-interest" class="metric-value">$71,370.62</h4>
+                        </div>
+                        <div class="metric-icon-bg emerald-bg">
+                            <i id="metric-icon-3" data-lucide="arrow-up-right"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Chart Panel -->
+                <div class="chart-container card">
+                    <div class="chart-header">
+                        <div>
+                            <h3 id="chart-panel-title">ប្រាក់សន្សំសរុប</h3>
+                            <p id="chart-panel-desc" class="chart-subtitle">ការប៉ាន់ស្មានការប្រមូលផ្តុំប្រាក់នាពេលអនាគត
+                                ធៀបនឹងប្រាក់ដើមដំបូង</p>
+                        </div>
+                        <div class="chart-actions">
+                            <span id="chart-panel-source" class="chart-source-indicator">រូបមន្តដែលបានផ្ទៀងផ្ទាត់ដោយ
+                                Investor.gov</span>
+                        </div>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="savingsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Ledger Table section -->
+                <div class="ledger-section">
+                    <div class="toggle-btn-container">
+                        <button id="toggle-table-btn" class="btn-toggle-table">
+                            <span class="btn-text">លាក់តារាង</span>
+                            <i data-lucide="chevron-up" class="btn-arrow"></i>
+                        </button>
+                    </div>
+
+                    <div id="table-wrapper" class="table-wrapper card scrollable-table">
+                        <div class="table-header-custom">
+                            <h3 id="table-title">ប្រាក់សន្សំសរុបគិតជាដុល្លារអាមេរិក</h3>
+                        </div>
+                        <table class="breakdown-table">
+                            <thead>
+                                <tr id="table-headings">
+                                    <th id="th-period">ឆ្នាំ</th>
+                                    <th id="th-future-value">តម្លៃនាពេលអនាគត (15.00%)</th>
+                                    <th id="th-contributions">ប្រាក់ដើមសរុប</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Filled by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p id="app-footer-text">&copy; ២០២៦ AeroGrowth Financial Labs។ រក្សាសិទ្ធិគ្រប់យ៉ាង។
+                ការគណនាប៉ាន់ស្មានផ្អែកលើអាលហ្គោរីតរូបមន្តការប្រាក់បូកដើម។ លទ្ធផលកន្លងមកមិនធានាដល់លទ្ធផលនាពេលអនាគតឡើយ។
+            </p>
+        </footer>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        /**
+         * AeroGrowth Multi-Mode Financial App Engine
+         * Dynamic savings compounding, target goals, and loan repayment scheduling (Khmer Edition).
+         */
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Lucide Icons
+            function refreshIcons() {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }
+            refreshIcons();
+
+            // --- Selectors ---
+
+            // Mode Switcher Tabs
+            const tabSavings = document.getElementById('tab-savings');
+            const tabGoal = document.getElementById('tab-goal');
+            const tabLoan = document.getElementById('tab-loan');
+
+            // Panel Labels & Title text
+            const parameterPanelTitle = document.getElementById('parameter-panel-title');
+            const parameterPanelDesc = document.getElementById('parameter-panel-desc');
+            const labelPrincipal = document.getElementById('label-principal');
+            const limitPrincipalMin = document.getElementById('limit-principal-min');
+            const limitPrincipalMax = document.getElementById('limit-principal-max');
+            const labelRate = document.getElementById('label-rate');
+            const limitRateMin = document.getElementById('limit-rate-min');
+            const limitRateMax = document.getElementById('limit-rate-max');
+            const labelYears = document.getElementById('label-years');
+            const unitLabel = document.getElementById('unit-label');
+            const limitYearsMin = document.getElementById('limit-years-min');
+            const limitYearsMax = document.getElementById('limit-years-max');
+
+            // Monthly Contribution / Initial Seed Selectors
+            const inputContribute = document.getElementById('input-contribute');
+            const sliderContribute = document.getElementById('slider-contribute');
+            const limitContributeMin = document.getElementById('limit-contribute-min');
+            const limitContributeMax = document.getElementById('limit-contribute-max');
+            const displayContributeSymbol = document.getElementById('display-contribute-symbol');
+            const groupContribute = document.getElementById('group-contribute');
+
+            // Currency Switcher Buttons
+            const btnUSD = document.getElementById('btn-usd');
+            const btnKHR = document.getElementById('btn-khr');
+            const displayCurrencySymbol = document.getElementById('display-currency-symbol');
+
+            // Dynamic Option Form Groups
+            const groupCompound = document.getElementById('group-compound');
+            const groupRepayment = document.getElementById('group-repayment');
+            const radioLoanOptions = document.getElementsByName('loan-option');
+
+            // Formula elements
+            const formulaPanelLabel = document.getElementById('formula-panel-label');
+            const formulaPanelMath = document.getElementById('formula-panel-math');
+            const formulaPanelLegend = document.getElementById('formula-panel-legend');
+
+            // Inputs & Sliders
+            const inputPrincipal = document.getElementById('input-principal');
+            const sliderPrincipal = document.getElementById('slider-principal');
+            const inputRate = document.getElementById('input-rate');
+            const sliderRate = document.getElementById('slider-rate');
+            const inputYears = document.getElementById('input-years');
+            const sliderYears = document.getElementById('slider-years');
+            const selectCompound = document.getElementById('input-compound');
+
+            // Display Hero elements
+            const resultsHeroTitle = document.getElementById('results-hero-title');
+            const resultsHeroSubtitle = document.getElementById('results-hero-subtitle');
+            const resultsHeroFooterNote = document.getElementById('results-hero-footer-note');
+            const resultsBannerSentence = document.getElementById('results-banner-sentence');
+
+            // Display Summary Metrics Labels & Values
+            const metricLabel1 = document.getElementById('metric-label-1');
+            const metricLabel2 = document.getElementById('metric-label-2');
+            const metricLabel3 = document.getElementById('metric-label-3');
+            const summaryTotal = document.getElementById('summary-total');
+            const summaryContributions = document.getElementById('summary-contributions');
+            const summaryInterest = document.getElementById('summary-interest');
+
+            // Table elements
+            const toggleTableBtn = document.getElementById('toggle-table-btn');
+            const tableWrapper = document.getElementById('table-wrapper');
+            const tableBody = document.getElementById('table-body');
+            const tableHeadings = document.getElementById('table-headings');
+            const tableTitle = document.getElementById('table-title');
+
+            // Chart Canvas
+            const ctx = document.getElementById('savingsChart').getContext('2d');
+
+            // --- State Variables ---
+            let currentMode = 'savings'; // 'savings', 'goal', or 'loan'
+            let currentCurrency = 'USD'; // 'USD' or 'KHR'
+            let savingsChart = null;
+
+            // --- Helper Functions ---
+
+            // Currency Conversion (1 USD = 4,000 KHR standard peg)
+            function convertValue(val, fromCurrency, toCurrency) {
+                if (fromCurrency === toCurrency) return val;
+                if (fromCurrency === 'USD' && toCurrency === 'KHR') return val * 4000;
+                if (fromCurrency === 'KHR' && toCurrency === 'USD') return val / 4000;
+                return val;
+            }
+
+            // Currency Formatting (USD $ or KHR ៛)
+            function formatCurrency(value) {
+                if (currentCurrency === 'USD') {
+                    return new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(value);
+                } else {
+                    // For KHR, format as integer with ៛ symbol at the end (standard in Cambodian digital banking)
+                    return new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(Math.round(value)) + ' ៛';
+                }
+            }
+
+            // Dynamic Principal and Monthly Contribution Bounding & Currency Symbol Synchronization
+            function updatePrincipalRanges(previousCurrency, convertValueFlag = true) {
+                if (currentMode === 'savings' || currentMode === 'goal') {
+                    if (currentCurrency === 'USD') {
+                        inputPrincipal.min = 100;
+                        inputPrincipal.max = 10000000;
+                        sliderPrincipal.min = 100;
+                        sliderPrincipal.max = 100000;
+                        sliderPrincipal.step = 500;
+                        limitPrincipalMin.textContent = "$100";
+                        limitPrincipalMax.textContent = "$100,000";
+                        displayCurrencySymbol.textContent = "$";
+
+                        inputContribute.min = 0;
+                        inputContribute.max = 10000000;
+                        sliderContribute.min = 0;
+                        sliderContribute.max = 10000;
+                        sliderContribute.step = 50;
+                        limitContributeMin.textContent = "$0";
+                        limitContributeMax.textContent = "$10,000";
+                        displayContributeSymbol.textContent = "$";
+                    } else { // KHR
+                        inputPrincipal.min = 400000;
+                        inputPrincipal.max = 40000000000;
+                        sliderPrincipal.min = 400000;
+                        sliderPrincipal.max = 400000000;
+                        sliderPrincipal.step = 2000000;
+                        limitPrincipalMin.textContent = "400,000 ៛";
+                        limitPrincipalMax.textContent = "400,000,000 ៛";
+                        displayCurrencySymbol.textContent = "៛";
+
+                        inputContribute.min = 0;
+                        inputContribute.max = 40000000000;
+                        sliderContribute.min = 0;
+                        sliderContribute.max = 40000000;
+                        sliderContribute.step = 200000;
+                        limitContributeMin.textContent = "0 ៛";
+                        limitContributeMax.textContent = "40,000,000 ៛";
+                        displayContributeSymbol.textContent = "៛";
+                    }
+                } else { // Loan Mode
+                    if (currentCurrency === 'USD') {
+                        inputPrincipal.min = 100;
+                        inputPrincipal.max = 10000000;
+                        sliderPrincipal.min = 100;
+                        sliderPrincipal.max = 100000;
+                        sliderPrincipal.step = 500;
+                        limitPrincipalMin.textContent = "$100";
+                        limitPrincipalMax.textContent = "$100,000";
+                        displayCurrencySymbol.textContent = "$";
+                    } else { // KHR
+                        inputPrincipal.min = 400000;
+                        inputPrincipal.max = 40000000000;
+                        sliderPrincipal.min = 400000;
+                        sliderPrincipal.max = 400000000;
+                        sliderPrincipal.step = 2000000;
+                        limitPrincipalMin.textContent = "400,000 ៛";
+                        limitPrincipalMax.textContent = "400,000,000 ៛";
+                        displayCurrencySymbol.textContent = "៛";
+                    }
+                }
+
+                if (convertValueFlag) {
+                    const P_val = parseFloat(inputPrincipal.value) || 0;
+                    const converted_P = convertValue(P_val, previousCurrency, currentCurrency);
+                    inputPrincipal.value = Math.round(converted_P);
+                    sliderPrincipal.value = Math.round(converted_P);
+
+                    if (currentMode === 'savings' || currentMode === 'goal') {
+                        const PMT_val = parseFloat(inputContribute.value) || 0;
+                        const converted_PMT = convertValue(PMT_val, previousCurrency, currentCurrency);
+                        inputContribute.value = Math.round(converted_PMT);
+                        sliderContribute.value = Math.round(converted_PMT);
+                    }
+                }
+            }
+
+            // Sync input ranges with manual numerical fields
+            function syncInputs(numInput, sliderInput) {
+                numInput.addEventListener('input', () => {
+                    let val = parseFloat(numInput.value);
+                    if (isNaN(val)) return;
+
+                    // Constrain value to limits
+                    const min = parseFloat(numInput.min);
+                    const max = parseFloat(numInput.max);
+                    if (val < min) val = min;
+                    if (val > max) val = max;
+
+                    sliderInput.value = val;
+                    executeCalculation();
+                });
+
+                sliderInput.addEventListener('input', () => {
+                    numInput.value = sliderInput.value;
+                    executeCalculation();
+                });
+            }
+
+            // Sync primary controls
+            syncInputs(inputPrincipal, sliderPrincipal);
+            syncInputs(inputContribute, sliderContribute);
+            syncInputs(inputRate, sliderRate);
+            syncInputs(inputYears, sliderYears);
+
+            // Hook change listeners
+            selectCompound.addEventListener('change', executeCalculation);
+            radioLoanOptions.forEach(radio => {
+                radio.addEventListener('change', executeCalculation);
+            });
+
+            // Dynamic number counter animation (using requestAnimationFrame)
+            function animateTextValue(element, targetVal, isCurrency = true) {
+                if (!element) return;
+                const startVal = parseFloat(element.getAttribute('data-value')) || 0;
+                const duration = 200; // Milliseconds
+                const startTime = performance.now();
+
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    if (elapsed >= duration) {
+                        element.textContent = isCurrency ? formatCurrency(targetVal) : Math.round(targetVal);
+                        element.setAttribute('data-value', targetVal);
+                        return;
+                    }
+
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeProgress = progress * (2 - progress); // Ease out
+                    const currentVal = startVal + (targetVal - startVal) * easeProgress;
+
+                    element.textContent = isCurrency ? formatCurrency(currentVal) : Math.round(currentVal);
+                    requestAnimationFrame(update);
+                }
+
+                element.setAttribute('data-value', targetVal);
+                requestAnimationFrame(update);
+            }
+
+            // --- Mode Management ---
+
+            function switchMode(mode) {
+                currentMode = mode;
+
+                if (mode === 'savings') {
+                    // Update Active Tabs
+                    tabSavings.classList.add('active');
+                    tabGoal.classList.remove('active');
+                    tabLoan.classList.remove('active');
+
+                    // Toggle Panel Visibility
+                    groupCompound.classList.remove('hidden');
+                    groupContribute.classList.remove('hidden');
+                    groupRepayment.classList.add('hidden');
+
+                    // Update Labels to Savings Context
+                    parameterPanelTitle.textContent = "ប៉ារ៉ាមែត្រនៃការគណនា";
+                    parameterPanelDesc.textContent = "កែសម្រួលអថេរខាងក្រោម ដើម្បីប៉ាន់ស្មានកំណើននៃការវិនិយោគរបស់អ្នកទៅតាមពេលវេលា។";
+                    labelPrincipal.textContent = "ប្រាក់ដើមវិនិយោគ (P)";
+
+                    labelRate.textContent = "អត្រាការប្រាក់ប្រចាំឆ្នាំ (r)";
+                    limitRateMin.textContent = "0.5%";
+                    limitRateMax.textContent = "30.0%";
+
+                    labelYears.textContent = "រយៈពេលគិតជាឆ្នាំ (t)";
+                    unitLabel.textContent = "ឆ្នាំ";
+                    limitYearsMin.textContent = "1 ឆ្នាំ";
+                    limitYearsMax.textContent = "50 ឆ្នាំ";
+
+                    // Update Sliders bounds
+                    updatePrincipalRanges(currentCurrency, false);
+
+                    inputRate.min = 0.05;
+                    inputRate.max = 100;
+                    sliderRate.min = 0.5;
+                    sliderRate.max = 30.0;
+                    sliderRate.step = 0.1;
+
+                    inputYears.min = 1;
+                    inputYears.max = 100;
+                    sliderYears.min = 1;
+                    sliderYears.max = 50;
+
+                    // Reset values to Savings defaults
+                    const defaultPrincipal = currentCurrency === 'USD' ? 10000 : 40000000;
+                    inputPrincipal.value = defaultPrincipal;
+                    sliderPrincipal.value = defaultPrincipal;
+
+                    const defaultContribute = currentCurrency === 'USD' ? 500 : 2000000;
+                    inputContribute.value = defaultContribute;
+                    sliderContribute.value = defaultContribute;
+
+                    inputRate.value = 15.00;
+                    sliderRate.value = 15;
+                    inputYears.value = 15;
+                    sliderYears.value = 15;
+
+                    // Mathematical formula box
+                    formulaPanelLabel.textContent = "រូបមន្តគណិតវិទ្យាដែលបានប្រើ";
+                    formulaPanelMath.innerHTML = "A = P &times; (1 + r/n)<sup>(n&middot;t)</sup>";
+                    formulaPanelLegend.innerHTML = "ដែល <strong>A</strong> គឺជាតម្លៃចុងក្រោយ, <strong>P</strong> គឺជាប្រាក់ដើមវិនិយោគ, <strong>r</strong> គឺជាអត្រាការប្រាក់, <strong>n</strong> គឺជាប្រេកង់នៃការបូកការប្រាក់ក្នុងមួយឆ្នាំ និង <strong>t</strong> ជារយៈពេលគិតជាឆ្នាំ។";
+
+                    // Hero details
+                    resultsHeroTitle.textContent = "លទ្ធផលនៃការគណនា";
+                    resultsHeroSubtitle.textContent = "គំនូសតាងខាងក្រោមបង្ហាញពីការប៉ាន់ស្មានអំពីចំនួនប្រាក់សន្សំដំបូងរបស់អ្នកដែលនឹងកើនឡើងទៅតាមពេលវេលា យោងទៅតាមអត្រាការប្រាក់ និងកាលវិភាគបូកការប្រាក់ដែលអ្នកបានកំណត់។";
+                    resultsHeroFooterNote.textContent = "សូមចងចាំថា ការកែសម្រួលបន្តិចបន្តួចលើអថេរទាំងនេះអាចប៉ះពាល់ដល់លទ្ធផលចុងក្រោយ។ អ្នកអាចសាកល្បងបញ្ចូលតួលេខផ្សេងទៀត ដើម្បីមើលសេនារីយ៉ូផ្សេងៗគ្នា។";
+
+                    // Summary metrics titles & icons
+                    metricLabel1.textContent = "តម្លៃនាពេលអនាគត";
+                    metricLabel2.textContent = "ប្រាក់ដើមវិនិយោគសរុប";
+                    metricLabel3.textContent = "ការប្រាក់សរុបដែលទទួលបាន";
+
+                    // Update icons using lucide dynamic bindings
+                    document.getElementById('metric-icon-1').setAttribute('data-lucide', 'wallet');
+                    document.getElementById('metric-icon-2').setAttribute('data-lucide', 'piggy-bank');
+                    document.getElementById('metric-icon-3').setAttribute('data-lucide', 'arrow-up-right');
+
+                    // Chart details
+                    document.getElementById('chart-panel-title').textContent = "ប្រាក់សន្សំសរុប";
+                    document.getElementById('chart-panel-desc').textContent = "ការប៉ាន់ស្មានការប្រមូលផ្តុំប្រាក់នាពេលអនាគត ធៀបនឹងប្រាក់ដើមដំបូង";
+                    document.getElementById('chart-panel-source').textContent = "រូបមន្តដែលបានផ្ទៀងផ្ទាត់ដោយ Investor.gov";
+
+                    tableTitle.textContent = currentCurrency === 'USD' ? "ប្រាក់សន្សំសរុបគិតជាដុល្លារអាមេរិក (USD)" : "ប្រាក់សន្សំសរុបគិតជារៀល (KHR)";
+
+                } else if (mode === 'goal') {
+                    // Update Active Tabs
+                    tabSavings.classList.remove('active');
+                    tabGoal.classList.add('active');
+                    tabLoan.classList.remove('active');
+
+                    // Toggle Panel Visibility
+                    groupCompound.classList.remove('hidden');
+                    groupContribute.classList.remove('hidden');
+                    groupRepayment.classList.add('hidden');
+
+                    // Update Labels to Goal Context
+                    parameterPanelTitle.textContent = "ប៉ារ៉ាមែត្រគោលដៅ";
+                    parameterPanelDesc.textContent = "កែសម្រួលប៉ារ៉ាម៉ែត្រខាងក្រោម ដើម្បីគណនាទឹកប្រាក់សន្សំប្រចាំខែដែលត្រូវការដើម្បីសម្រេចគោលដៅហិរញ្ញវត្ថុរបស់អ្នក។";
+                    labelPrincipal.textContent = "ទឹកប្រាក់គោលដៅចង់បាន (A)";
+
+                    labelRate.textContent = "អត្រាការប្រាក់ប្រចាំឆ្នាំ (r)";
+                    limitRateMin.textContent = "0.5%";
+                    limitRateMax.textContent = "30.0%";
+
+                    labelYears.textContent = "រយៈពេលគិតជាឆ្នាំ (t)";
+                    unitLabel.textContent = "ឆ្នាំ";
+                    limitYearsMin.textContent = "1 ឆ្នាំ";
+                    limitYearsMax.textContent = "50 ឆ្នាំ";
+
+                    // Update Sliders bounds
+                    updatePrincipalRanges(currentCurrency, false);
+
+                    inputRate.min = 0.05;
+                    inputRate.max = 100;
+                    sliderRate.min = 0.5;
+                    sliderRate.max = 30.0;
+                    sliderRate.step = 0.1;
+
+                    inputYears.min = 1;
+                    inputYears.max = 100;
+                    sliderYears.min = 1;
+                    sliderYears.max = 50;
+
+                    // Reset values to Goal defaults
+                    const defaultPrincipal = currentCurrency === 'USD' ? 50000 : 200000000;
+                    inputPrincipal.value = defaultPrincipal;
+                    sliderPrincipal.value = defaultPrincipal;
+
+                    const defaultContribute = currentCurrency === 'USD' ? 10000 : 40000000;
+                    inputContribute.value = defaultContribute;
+                    sliderContribute.value = defaultContribute;
+
+                    inputRate.value = 12.00;
+                    sliderRate.value = 12;
+                    inputYears.value = 5;
+                    sliderYears.value = 5;
+
+                    // Mathematical formula box
+                    formulaPanelLabel.textContent = "រូបមន្តគណនាការសន្សំសម្រេចគោលដៅ";
+                    formulaPanelMath.innerHTML = "PMT = [A - P(1 + r/n)<sup>nt</sup>] &times; [i / ((1 + i)<sup>12t</sup> - 1)]";
+                    formulaPanelLegend.innerHTML = "ដែល <strong>PMT</strong> គឺជាប្រាក់សន្សំប្រចាំខែដែលត្រូវការ, <strong>A</strong> គឺជាទឹកប្រាក់គោលដៅ, <strong>P</strong> គឺជាប្រាក់ដើមសន្សំដំបូងមានស្រាប់, <strong>i</strong> គឺជាអត្រាការប្រាក់ប្រចាំខែ និង <strong>t</strong> ជារយៈពេលគិតជាឆ្នាំ។";
+
+                    // Hero details
+                    resultsHeroTitle.textContent = "ការប៉ាន់ស្មានការសន្សំសម្រេចគោលដៅ";
+                    resultsHeroSubtitle.textContent = "គំនូសតាងខាងក្រោមបង្ហាញពីរបៀបដែលប្រាក់សន្សំប្រចាំខែដែលត្រូវការនឹងសន្សំបូកបញ្ចូលគ្នាដើម្បីសម្រេចបាននូវចំនួនទឹកប្រាក់គោលដៅរបស់អ្នក។";
+                    resultsHeroFooterNote.textContent = "អត្រាការប្រាក់កាន់តែខ្ពស់ ឬរយៈពេលកាន់តែវែង នឹងជួយកាត់បន្ថយចំនួនប្រាក់សន្សំប្រចាំខែដែលអ្នកត្រូវការទម្លាក់ចូល។";
+
+                    // Summary metrics titles & icons
+                    metricLabel1.textContent = "ប្រាក់សន្សំប្រចាំខែដែលត្រូវការ";
+                    metricLabel2.textContent = "ប្រាក់ដើមសរុបដែលបានដាក់";
+                    metricLabel3.textContent = "ការប្រាក់សរុបដែលទទួលបាន";
+
+                    // Update icons using lucide dynamic bindings
+                    document.getElementById('metric-icon-1').setAttribute('data-lucide', 'wallet');
+                    document.getElementById('metric-icon-2').setAttribute('data-lucide', 'piggy-bank');
+                    document.getElementById('metric-icon-3').setAttribute('data-lucide', 'arrow-up-right');
+
+                    // Chart details
+                    document.getElementById('chart-panel-title').textContent = "ផែនការសន្សំសម្រេចគោលដៅ";
+                    document.getElementById('chart-panel-desc').textContent = "ការប្រមូលផ្តុំប្រាក់សរុបធៀបនឹងការរួមចំណែកប្រចាំខែដើម្បីសម្រេចគោលដៅ";
+                    document.getElementById('chart-panel-source').textContent = "រូបមន្តដែលបានផ្ទៀងផ្ទាត់ដោយ Investor.gov";
+
+                    tableTitle.textContent = currentCurrency === 'USD' ? "កាលវិភាគលម្អិតនៃការសន្សំសម្រេចគោលដៅគិតជាដុល្លារអាមេរិក (USD)" : "កាលវិភាគលម្អិតនៃការសន្សំសម្រេចគោលដៅគិតជារៀល (KHR)";
+
+                } else if (mode === 'loan') {
+                    // Update Active Tabs
+                    tabSavings.classList.remove('active');
+                    tabGoal.classList.remove('active');
+                    tabLoan.classList.add('active');
+
+                    // Toggle Panel Visibility
+                    groupCompound.classList.add('hidden');
+                    groupContribute.classList.add('hidden');
+                    groupRepayment.classList.remove('hidden');
+
+                    // Update Labels to Loan Repayment Context
+                    parameterPanelTitle.textContent = "ប៉ារ៉ាមែត្រកម្ចី";
+                    parameterPanelDesc.textContent = "កែសម្រួលប៉ារ៉ាម៉ែត្រខាងក្រោម ដើម្បីគណនាតារាងសងប្រាក់កម្ចីតាមអត្រាថេរ ឬសមតុល្យថយចុះ។";
+                    labelPrincipal.textContent = "ចំនួនប្រាក់កម្ចី (P)";
+
+                    labelRate.textContent = "អត្រាការប្រាក់ក្នុងមួយវគ្គ (r)";
+                    limitRateMin.textContent = "0.1%";
+                    limitRateMax.textContent = "10.0%";
+
+                    labelYears.textContent = "រយៈពេលសងប្រាក់ (t)";
+                    unitLabel.textContent = "ខែ";
+                    limitYearsMin.textContent = "1 ខែ";
+                    limitYearsMax.textContent = "60 ខែ";
+
+                    // Update Sliders bounds
+                    updatePrincipalRanges(currentCurrency, false);
+
+                    inputRate.min = 0.05;
+                    inputRate.max = 50;
+                    sliderRate.min = 0.1;
+                    sliderRate.max = 10.0;
+                    sliderRate.step = 0.05;
+
+                    inputYears.min = 1;
+                    inputYears.max = 360;
+                    sliderYears.min = 1;
+                    sliderYears.max = 60;
+
+                    // Reset values to Loan Repayment defaults
+                    const defaultPrincipal = currentCurrency === 'USD' ? 10000 : 40000000;
+                    inputPrincipal.value = defaultPrincipal;
+                    sliderPrincipal.value = defaultPrincipal;
+                    inputRate.value = 1.50;
+                    sliderRate.value = 1.50;
+                    inputYears.value = 10;
+                    sliderYears.value = 10;
+
+                    // Mathematical formula box
+                    formulaPanelLabel.textContent = "អាលហ្គោរីតនៃការបង់រំលស់";
+                    formulaPanelMath.innerHTML = "ការប្រាក់ = ប្រាក់ដើម &times; អត្រាការប្រាក់";
+                    formulaPanelLegend.innerHTML = "<strong>ជម្រើសទី ១ (អត្រាថេរ)</strong> គណនាការប្រាក់លើប្រាក់ដើមដំបូង។ <strong>ជម្រើសទី ២ (សមតុល្យថយចុះ)</strong> គណនាការប្រាក់លើសមតុល្យប្រាក់ដើមដែលនៅសល់៖ I<sub>i</sub> = សមតុល្យ<sub>i</sub> &times; r។";
+
+                    // Hero details
+                    resultsHeroTitle.textContent = "ការប៉ាន់ស្មាននៃការសងប្រាក់";
+                    resultsHeroSubtitle.textContent = "គំនូសតាងខាងក្រោមបង្ហាញពីខ្សែកោងនៃការថយចុះសមតុល្យប្រាក់កម្ចី និងការបែងចែកការទូទាត់ទៅតាមវិធីសាស្ត្រសងប្រាក់ដែលបានជ្រើសរើស។";
+                    resultsHeroFooterNote.textContent = "ជម្រើសទី ១ រក្សាការប្រាក់ក្នុងមួយវគ្គឱ្យនៅថេរស្មើគ្នា។ ជម្រើសទី ២ កាត់បន្ថយការប្រាក់បន្តិចម្តងៗ ដែលធ្វើឱ្យការចំណាយលើការប្រាក់សរុបមានកម្រិតទាបជាង។";
+
+                    // Summary metrics titles & icons
+                    metricLabel1.textContent = "ការទូទាត់សងសរុប";
+                    metricLabel2.textContent = "ចំនួនប្រាក់ដើមកម្ចី";
+                    metricLabel3.textContent = "ថ្លៃចំណាយការប្រាក់សរុប";
+
+                    document.getElementById('metric-icon-1').setAttribute('data-lucide', 'credit-card');
+                    document.getElementById('metric-icon-2').setAttribute('data-lucide', 'shield-check');
+                    document.getElementById('metric-icon-3').setAttribute('data-lucide', 'dollar-sign');
+
+                    // Chart details
+                    document.getElementById('chart-panel-title').textContent = "តារាងបង់រំលស់";
+                    document.getElementById('chart-panel-desc').textContent = "ការកាត់បន្ថយបំណុលដែលនៅសល់ និងការបែងចែកការបង់ប្រាក់តាមវគ្គ";
+                    document.getElementById('chart-panel-source').textContent = "រូបមន្តរំលស់លីនេអ៊ែរ";
+
+                    tableTitle.textContent = "កាលវិភាគបង់រំលស់លម្អិត";
+                }
+
+                // Re-draw icons and execute calculations
+                refreshIcons();
+                executeCalculation();
+            }
+
+            // Add Tab click triggers
+            tabSavings.addEventListener('click', () => switchMode('savings'));
+            tabGoal.addEventListener('click', () => switchMode('goal'));
+            tabLoan.addEventListener('click', () => switchMode('loan'));
+
+            // --- Currency Switcher Triggers ---
+            btnUSD.addEventListener('click', () => {
+                if (currentCurrency === 'USD') return;
+                const oldCurrency = currentCurrency;
+                currentCurrency = 'USD';
+                btnUSD.classList.add('active');
+                btnKHR.classList.remove('active');
+                updatePrincipalRanges(oldCurrency, true);
+                if (currentMode === 'savings') {
+                    tableTitle.textContent = "ប្រាក់សន្សំសរុបគិតជាដុល្លារអាមេរិក (USD)";
+                } else if (currentMode === 'goal') {
+                    tableTitle.textContent = "កាលវិភាគលម្អិតនៃការសន្សំសម្រេចគោលដៅគិតជាដុល្លារអាមេរិក (USD)";
+                }
+                executeCalculation();
+            });
+
+            btnKHR.addEventListener('click', () => {
+                if (currentCurrency === 'KHR') return;
+                const oldCurrency = currentCurrency;
+                currentCurrency = 'KHR';
+                btnKHR.classList.add('active');
+                btnUSD.classList.remove('active');
+                updatePrincipalRanges(oldCurrency, true);
+                if (currentMode === 'savings') {
+                    tableTitle.textContent = "ប្រាក់សន្សំសរុបគិតជារៀល (KHR)";
+                } else if (currentMode === 'goal') {
+                    tableTitle.textContent = "កាលវិភាគលម្អិតនៃការសន្សំសម្រេចគោលដៅគិតជារៀល (KHR)";
+                }
+                executeCalculation();
+            });
+
+            // --- Master Calculation Dispatcher ---
+
+            function executeCalculation() {
+                if (currentMode === 'savings') {
+                    calculateSavings();
+                } else if (currentMode === 'goal') {
+                    calculateGoal();
+                } else {
+                    calculateLoan();
+                }
+            }
+
+            // --- Calculator Mode 1: Savings Growth (Compound Interest) ---
+
+            function calculateSavings() {
+                const P = parseFloat(inputPrincipal.value) || 0;
+                const PMT = parseFloat(inputContribute.value) || 0; // PMT Monthly contribution (Optional, can be 0 or empty)
+                const rInput = parseFloat(inputRate.value) || 0;
+                const r = rInput / 100;
+                const t = parseInt(inputYears.value) || 0;
+                const n = parseInt(selectCompound.value) || 1;
+
+                // Reset dynamic results banner sentence structure safely
+                resultsBannerSentence.innerHTML = `
+                    ក្នុងរយៈពេល <span class="highlight-box" id="display-years-box">${t}</span> ឆ្នាំ អ្នកនឹងមានប្រាក់សរុប <span class="highlight-amount-box" id="display-amount-box">$0.00</span>
+                `;
+
+                const displayAmountBox = document.getElementById('display-amount-box');
+
+                const yearsLabels = [];
+                const futureValueData = [];
+                const contributionsData = [];
+
+                // Year 0
+                yearsLabels.push("ឆ្នាំ 0");
+                futureValueData.push(P);
+                contributionsData.push(P);
+
+                // Compounding Loops
+                for (let y = 1; y <= t; y++) {
+                    yearsLabels.push(`ឆ្នាំ ${y}`);
+
+                    // FV of Principal Seed Capital: P * (1 + r/n)^(n*y)
+                    const A_principal = P * Math.pow((1 + r / n), (n * y));
+
+                    // FV of Monthly Contributions (PMT):
+                    // Using effective monthly rate i = (1 + r/n)^(n/12) - 1
+                    let A_contributions = 0;
+                    if (PMT > 0) {
+                        if (r > 0) {
+                            const i_monthly = Math.pow(1 + r / n, n / 12) - 1;
+                            A_contributions = PMT * (Math.pow(1 + i_monthly, 12 * y) - 1) / i_monthly;
+                        } else {
+                            A_contributions = PMT * 12 * y;
+                        }
+                    }
+
+                    const A = A_principal + A_contributions;
+                    futureValueData.push(A);
+                    contributionsData.push(P + (12 * PMT * y));
+                }
+
+                const finalAmount = futureValueData[futureValueData.length - 1] || P;
+                const totalContributions = P + (12 * PMT * t);
+                const totalInterest = finalAmount - totalContributions;
+
+                // Dynamic Elements
+                animateTextValue(displayAmountBox, finalAmount, true);
+                animateTextValue(summaryTotal, finalAmount, true);
+                animateTextValue(summaryContributions, totalContributions, true);
+                animateTextValue(summaryInterest, totalInterest, true);
+
+                // Reset Table headings to Savings Layout in Khmer
+                tableHeadings.innerHTML = `
+                    <th id="th-period">ឆ្នាំ</th>
+                    <th id="th-future-value">តម្លៃនាពេលអនាគត (${rInput.toFixed(2)}%)</th>
+                    <th id="th-contributions">ប្រាក់ដើមសរុប</th>
+                `;
+
+                // Render Table Body
+                tableBody.innerHTML = '';
+                for (let idx = 0; idx < yearsLabels.length; idx++) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${yearsLabels[idx]}</td>
+                        <td>${formatCurrency(futureValueData[idx])}</td>
+                        <td>${formatCurrency(contributionsData[idx])}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                }
+
+                // Draw Savings Line Chart
+                drawSavingsChart(yearsLabels, futureValueData, contributionsData, rInput);
+            }
+
+            // --- Calculator Mode 2: Saving Goal ---
+
+            function calculateGoal() {
+                const A_target = parseFloat(inputPrincipal.value) || 0; // Target Goal Amount (A)
+                const P_seed = parseFloat(inputContribute.value) || 0; // Initial Seed Money (P)
+                const rInput = parseFloat(inputRate.value) || 0;
+                const r = rInput / 100;
+                const t = parseInt(inputYears.value) || 0;
+                const n = parseInt(selectCompound.value) || 1;
+
+                // Reset dynamic results banner sentence structure safely to Khmer
+                resultsBannerSentence.innerHTML = `
+                    ដើម្បីសម្រេចគោលដៅ <span class="highlight-box" id="display-goal-box">$0.00</span> ក្នុងរយៈពេល <span class="highlight-box" id="display-years-box">${t}</span> ឆ្នាំ អ្នកត្រូវសន្សំប្រចាំខែចំនួន <span class="highlight-amount-box" id="display-amount-box">$0.00</span>
+                `;
+
+                const displayGoalBox = document.getElementById('display-goal-box');
+                const displayAmountBox = document.getElementById('display-amount-box');
+                displayGoalBox.textContent = formatCurrency(A_target);
+
+                // Effective Monthly Interest Rate i
+                const i_monthly = r > 0 ? (Math.pow(1 + r / n, n / 12) - 1) : 0;
+
+                // Future Value of the seed capital P at year t
+                const A_seed_final = P_seed * Math.pow((1 + r / n), (n * t));
+
+                // Required remaining future value from monthly contributions
+                const A_needed = Math.max(0, A_target - A_seed_final);
+
+                // Required Monthly Contribution PMT
+                let PMT = 0;
+                if (A_needed > 0) {
+                    if (r > 0) {
+                        const compoundFactor = (Math.pow(1 + i_monthly, 12 * t) - 1) / i_monthly;
+                        PMT = A_needed / compoundFactor;
+                    } else {
+                        PMT = A_needed / (12 * t);
+                    }
+                }
+
+                const yearsLabels = [];
+                const futureValueData = [];
+                const contributionsData = [];
+
+                // Year 0
+                yearsLabels.push("ឆ្នាំ 0");
+                futureValueData.push(P_seed);
+                contributionsData.push(P_seed);
+
+                // Compounding loops year-by-year
+                for (let y = 1; y <= t; y++) {
+                    yearsLabels.push(`ឆ្នាំ ${y}`);
+
+                    const A_seed_y = P_seed * Math.pow((1 + r / n), (n * y));
+                    let A_contrib_y = 0;
+                    if (PMT > 0) {
+                        if (r > 0) {
+                            const compoundFactor_y = (Math.pow(1 + i_monthly, 12 * y) - 1) / i_monthly;
+                            A_contrib_y = PMT * compoundFactor_y;
+                        } else {
+                            A_contrib_y = PMT * 12 * y;
+                        }
+                    }
+
+                    const A_y = A_seed_y + A_contrib_y;
+                    futureValueData.push(Math.min(A_target, A_y)); // Cap at target goal for cleaner chart representation
+                    contributionsData.push(P_seed + (12 * PMT * y));
+                }
+
+                const finalAmount = futureValueData[futureValueData.length - 1] || P_seed;
+                const totalContributions = P_seed + (12 * PMT * t);
+                const totalInterest = Math.max(0, finalAmount - totalContributions);
+
+                // Update Dynamic UI Display
+                animateTextValue(displayAmountBox, PMT, true);
+                animateTextValue(summaryTotal, PMT, true); // Required Monthly Contribution shown on metric 1
+                animateTextValue(summaryContributions, totalContributions, true); // Total principal shown on metric 2
+                animateTextValue(summaryInterest, totalInterest, true); // Total interest shown on metric 3
+
+                // Reset Table headings to Goal layout in Khmer
+                tableHeadings.innerHTML = `
+                    <th>ឆ្នាំ</th>
+                    <th>ប្រាក់សន្សំបូកបញ្ចូលគ្នា</th>
+                    <th>ប្រាក់ដើមសរុបដែលបានដាក់</th>
+                `;
+
+                // Render Table Body
+                tableBody.innerHTML = '';
+                for (let idx = 0; idx < yearsLabels.length; idx++) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${yearsLabels[idx]}</td>
+                        <td>${formatCurrency(futureValueData[idx])}</td>
+                        <td>${formatCurrency(contributionsData[idx])}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                }
+
+                // Draw Line Chart with same labels as Savings Growth
+                drawSavingsChart(yearsLabels, futureValueData, contributionsData, rInput);
+            }
+
+            // --- Calculator Mode 3: Loan Repayment ---
+
+            function calculateLoan() {
+                const P = parseFloat(inputPrincipal.value) || 0;
+                const rInput = parseFloat(inputRate.value) || 0;
+                const rateDecimal = rInput / 100;
+                const t = parseInt(inputYears.value) || 1;
+
+                // Retrieve Option Selector (Opt)
+                let opt = 1;
+                const checkedRadio = document.querySelector('input[name="loan-option"]:checked');
+                if (checkedRadio) {
+                    opt = parseInt(checkedRadio.value);
+                }
+
+                const monthlyPrinciple = P / t; // monthly_principle = P/t
+
+                // Reset dynamic results banner sentence structure safely to Khmer
+                resultsBannerSentence.innerHTML = `
+                    សម្រាប់កម្ចីរយៈពេល <span class="highlight-box" id="display-years-box">${t}</span> ខែ ការទូទាត់សងសរុបរបស់អ្នកគឺ <span class="highlight-amount-box" id="display-amount-box">$0.00</span>
+                `;
+
+                const displayAmountBox = document.getElementById('display-amount-box');
+
+                // Table arrays (Using Khmer labels)
+                const monthLabels = ["ចាប់ផ្តើម"];
+                const remainingPData = [P];
+                const paymentPeriodData = [0];
+
+                // Ledger row items
+                const ledgerItems = [];
+
+                let totalInterestPaid = 0;
+
+                if (opt === 1) {
+                    // OPTION 1: Flat Rate Method
+                    const interest = P * rateDecimal;
+
+                    for (let i = 1; i <= t; i++) {
+                        monthLabels.push(`ខែ ${i}`);
+
+                        const remainingP = P - (i * monthlyPrinciple);
+                        const payment = monthlyPrinciple + interest;
+                        totalInterestPaid += interest;
+
+                        remainingPData.push(Math.max(0, remainingP));
+                        paymentPeriodData.push(payment);
+
+                        ledgerItems.push({
+                            period: `ខែ ${i}`,
+                            remainingBalance: P - ((i - 1) * monthlyPrinciple),
+                            principalPaid: monthlyPrinciple,
+                            interestPaid: interest,
+                            totalPayment: payment
+                        });
+                    }
+                } else if (opt === 2) {
+                    // OPTION 2: Reducing Balance Method
+                    let remainingP = P;
+
+                    for (let i = 1; i <= t; i++) {
+                        monthLabels.push(`ខែ ${i}`);
+
+                        const interest = remainingP * rateDecimal;
+                        const payment = monthlyPrinciple + interest;
+                        totalInterestPaid += interest;
+
+                        paymentPeriodData.push(payment);
+
+                        ledgerItems.push({
+                            period: `ខែ ${i}`,
+                            remainingBalance: remainingP,
+                            principalPaid: monthlyPrinciple,
+                            interestPaid: interest,
+                            totalPayment: payment
+                        });
+
+                        remainingP = remainingP - monthlyPrinciple;
+                        remainingPData.push(Math.max(0, remainingP));
+                    }
+                }
+
+                const totalRepayment = P + totalInterestPaid;
+
+                // Update Dynamic UI Display
+                animateTextValue(displayAmountBox, totalRepayment, true);
+                animateTextValue(summaryTotal, totalRepayment, true);
+                animateTextValue(summaryContributions, P, true);
+                animateTextValue(summaryInterest, totalInterestPaid, true);
+
+                // Reset Table headings to Loan Repayment Layout in Khmer
+                tableHeadings.innerHTML = `
+                    <th>ខែ</th>
+                    <th>សមតុល្យដើមគ្រា</th>
+                    <th>ប្រាក់ដើមដែលបានសង</th>
+                    <th>ការប្រាក់ដែលបានបង់</th>
+                    <th>ការបង់ប្រាក់សរុប</th>
+                `;
+
+                // Render Ledger Rows
+                tableBody.innerHTML = '';
+                ledgerItems.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${item.period}</td>
+                        <td>${formatCurrency(item.remainingBalance)}</td>
+                        <td>${formatCurrency(item.principalPaid)}</td>
+                        <td>${formatCurrency(item.interestPaid)}</td>
+                        <td>${formatCurrency(item.totalPayment)}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // Draw Loan Repayment Chart labeled in months
+                drawLoanChart(monthLabels, remainingPData, paymentPeriodData, opt);
+            }
+
+            // --- Chart Drawer: Savings Growth & Goal ---
+            function drawSavingsChart(labels, fvData, contribData, rateVal) {
+                const accentColor = '#e06a55';
+                const primaryColor = '#0f7680';
+
+                if (savingsChart) {
+                    savingsChart.destroy(); // Rebuild chart instance clean
+                }
+
+                const label1 = currentMode === 'savings' ? `តម្លៃនាពេលអនាគត (${rateVal.toFixed(2)}%)` : `សមតុល្យគោលដៅសន្សំ (${rateVal.toFixed(2)}%)`;
+                const label2 = currentMode === 'savings' ? 'ប្រាក់ដើមសរុប' : 'ប្រាក់ដើមសរុបដែលបានដាក់';
+
+                savingsChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: label1,
+                                data: fvData,
+                                borderColor: accentColor,
+                                backgroundColor: 'rgba(224, 106, 85, 0.08)',
+                                borderWidth: 3,
+                                pointBackgroundColor: accentColor,
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 1.5,
+                                pointRadius: 4,
+                                pointHoverRadius: 7,
+                                pointHoverBackgroundColor: accentColor,
+                                pointHoverBorderColor: '#ffffff',
+                                pointHoverBorderWidth: 2,
+                                tension: 0.25,
+                                fill: true
+                            },
+                            {
+                                label: label2,
+                                data: contribData,
+                                borderColor: primaryColor,
+                                backgroundColor: 'rgba(15, 118, 128, 0.04)',
+                                borderWidth: 2.5,
+                                pointBackgroundColor: primaryColor,
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 1.5,
+                                pointRadius: 4,
+                                pointHoverRadius: 6,
+                                pointHoverBackgroundColor: primaryColor,
+                                pointHoverBorderColor: '#ffffff',
+                                pointHoverBorderWidth: 2,
+                                tension: 0,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: getChartOptions('ឆ្នាំ', currentMode === 'savings' ? 'កំណើនប្រាក់សន្សំ' : 'ផែនការសម្រេចគោលដៅ')
+                });
+            }
+
+            // --- Chart Drawer: Loan Repayment ---
+            function drawLoanChart(labels, balanceData, paymentData, optionType) {
+                const accentColor = '#e06a55'; // Coral/Red for Debt Balance
+                const primaryColor = '#0f7680'; // Teal for Period Installments
+
+                if (savingsChart) {
+                    savingsChart.destroy();
+                }
+
+                const optionText = optionType === 1 ? "អត្រាថេរ" : "សមតុល្យថយចុះ";
+
+                savingsChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'សមតុល្យប្រាក់កម្ចីនៅសល់',
+                                data: balanceData,
+                                borderColor: accentColor,
+                                backgroundColor: 'rgba(224, 106, 85, 0.05)',
+                                borderWidth: 3,
+                                pointBackgroundColor: accentColor,
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 1.5,
+                                pointRadius: 4,
+                                pointHoverRadius: 7,
+                                tension: 0,
+                                fill: true
+                            },
+                            {
+                                label: `ការបង់ប្រាក់ប្រចាំវគ្គ (${optionText})`,
+                                data: paymentData,
+                                borderColor: primaryColor,
+                                backgroundColor: 'rgba(15, 118, 128, 0.05)',
+                                borderWidth: 2.5,
+                                pointBackgroundColor: primaryColor,
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 1.5,
+                                pointRadius: 4,
+                                pointHoverRadius: 6,
+                                tension: optionType === 1 ? 0 : 0.1,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: getChartOptions('ខែ', 'កាលវិភាគបង់រំលស់')
+                });
+            }
+
+            // Universal Chartjs styling configs
+            function getChartOptions(xTitle, tooltipType) {
+                return {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 15,
+                                font: {
+                                    family: 'Kantumruy Pro, Inter',
+                                    size: 12,
+                                    weight: 500
+                                },
+                                color: '#1e2c2e',
+                                padding: 16
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(11, 34, 64, 0.95)',
+                            titleFont: {
+                                family: 'Kantumruy Pro, Outfit',
+                                size: 14,
+                                weight: 600
+                            },
+                            bodyFont: {
+                                family: 'Kantumruy Pro, Inter',
+                                size: 13
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function (context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += formatCurrency(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: '#eef3f3'
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Kantumruy Pro, Inter',
+                                    size: 11
+                                },
+                                color: '#5c7173'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: '#eef3f3'
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Kantumruy Pro, Outfit',
+                                    size: 11,
+                                    weight: 500
+                                },
+                                color: '#5c7173',
+                                callback: function (value) {
+                                    if (currentCurrency === 'USD') {
+                                        if (value >= 1000) {
+                                            return '$' + (value / 1000) + 'k';
+                                        }
+                                        return '$' + value;
+                                    } else {
+                                        // For Khmer Riel, format as Millions (M) or thousands (k) to look very premium
+                                        if (value >= 1000000) {
+                                            return (value / 1000000) + 'M ៛';
+                                        }
+                                        if (value >= 1000) {
+                                            return (value / 1000) + 'k ៛';
+                                        }
+                                        return value + ' ៛';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+
+            // --- Table Collapse Drawer Setup ---
+            toggleTableBtn.addEventListener('click', () => {
+                const isCollapsed = tableWrapper.classList.toggle('collapsed');
+                const arrow = toggleTableBtn.querySelector('.btn-arrow');
+                const textSpan = toggleTableBtn.querySelector('.btn-text');
+
+                if (isCollapsed) {
+                    textSpan.textContent = 'បង្ហាញតារាង';
+                    arrow.classList.add('rotated');
+                } else {
+                    textSpan.textContent = 'លាក់តារាង';
+                    arrow.classList.remove('rotated');
+                }
+            });
+
+            // --- Initialize ---
+            // Start on Savings Mode compounding default
+            switchMode('savings');
+        });
+    </script>
+</body>
+
+</html>
